@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moniepoint/components/searchField.dart';
@@ -10,11 +11,58 @@ class Dashboard extends StatefulWidget {
 }
 final style =  GoogleFonts.ptSerif();
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMixin {
+   late AnimationController controller;
+   late Animation<double> _animation;
   List<IconData> icons = [Icons.search_outlined,Icons.message,
     Icons.access_time_filled_sharp,Icons.heart_broken,Icons.padding_rounded
   ];
   int selectedIndex = 2;
+
+   bool get isForwardAnimation =>
+      controller.status == AnimationStatus.forward ||
+      controller.status == AnimationStatus.completed;
+
+
+   Future toggleHeader() => selectedIndex ==2 ? controller.reverse() :controller.forward();
+
+  Container dynamicIcons({IconData? iconData}) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration:  const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(0XFF737373),
+      ),
+      child:  Center(child: Icon(iconData,color: Colors.grey.shade400,)),
+    );
+  }
+   final iconColor = const Color(0XFFBDBDBD);
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000), // Adjust duration as needed
+    );
+    _animation = Tween<double>(begin: -1.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+    controller.forward();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -22,16 +70,18 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: Container(
         height: 70,
         width: MediaQuery.of(context).size.width /1.4,
-        margin:EdgeInsets.symmetric(vertical: 25),
-        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        margin:const EdgeInsets.only(bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
         decoration: BoxDecoration(
-          color: Color(0XFF2B2B2B),
+          color: const Color(0XFF2B2B2B),
           borderRadius: BorderRadius.circular(50)
         ),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemBuilder: (context,index){
           return  buildContainer(onTap: (){
+            // toggleHeader();
+            controller.forward();
             setState(() {
               selectedIndex = index;
             });
@@ -77,34 +127,43 @@ class _DashboardState extends State<Dashboard> {
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
-                               Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                 children: [
-                                   Container(
-                                     padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-                                     decoration: BoxDecoration(
-                                         borderRadius: BorderRadius.circular(7),
-                                         color: Colors.white
+                               Container(
+                                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.02),
+                                 child: Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                   children: [
+                                     SlideTransition(
+                                       position: Tween<Offset>(
+                                         begin: const Offset(-1, 0),
+                                         end: Offset.zero,
+                                       ).animate(controller),
+                                       child:  Container(
+                                         padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                                         decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(7),
+                                             color: Colors.white
+                                         ),
+                                         child: Row(
+                                           children: [
+                                             Icon(Icons.location_on,color: Colors.grey.shade500,),
+                                             Text("Saint Petersburg",style: GoogleFonts.ptSerif(
+                                                 color: Colors.grey,
+                                                 fontSize: 20,
+                                                 fontWeight: FontWeight.w400
+                                             ),)
+                                           ],
+                                         ),
+                                       ),
                                      ),
-                                     child: Row(
-                                       children: [
-                                         Icon(Icons.location_on,color: Colors.grey.shade500,),
-                                         Text("Saint Petersburg",style: GoogleFonts.ptSerif(
-                                             color: Colors.grey,
-                                             fontSize: 20,
-                                             fontWeight: FontWeight.w400
-                                         ),)
-                                       ],
+                                     Container(
+                                       margin: const EdgeInsets.only(top: 8),
+                                       child: const CircleAvatar(
+                                         radius: 30,
+                                         backgroundImage: AssetImage("assets/profile.jpg"),
+                                       ),
                                      ),
-                                   ),
-                                   Container(
-                                     margin: const EdgeInsets.only(top: 8),
-                                     child: const CircleAvatar(
-                                       radius: 30,
-                                       backgroundImage: AssetImage("assets/profile.jpg"),
-                                     ),
-                                   ),
-                                 ],
+                                   ],
+                                 ),
                                ),
                                const SizedBox(height: 30,),
                                Text("Hi Marina",style: style.copyWith(fontSize: 20,color: const Color(0XFFA5967F)),),
@@ -131,7 +190,7 @@ class _DashboardState extends State<Dashboard> {
                                          Text("BUY",style: style.copyWith(fontSize: 15,color: Colors.white),),
                                          Column(
                                            children: [
-                                             Text("1034",style: style.copyWith(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white),),
+                                             Text("1034",style: style.copyWith(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
                                              Text("Offers",style: style.copyWith(fontSize: 15,color: Colors.white),)
                                            ],
                                          ),
@@ -153,7 +212,7 @@ class _DashboardState extends State<Dashboard> {
                                          Text("RENT",style: style.copyWith(fontSize: 15,color: const Color(0XFFA5957E)),),
                                          Column(
                                            children: [
-                                             Text("2212",style: style.copyWith(fontSize: 30,fontWeight: FontWeight.bold,color: const Color(0XFFA5957E)),),
+                                             Text("2212",style: style.copyWith(fontSize: 25,fontWeight: FontWeight.bold,color: const Color(0XFFA5957E)),),
                                              Text("Offers",style: style.copyWith(fontSize: 15,color:const Color(0XFFA5957E)),)
                                            ],
                                          ),
@@ -172,11 +231,11 @@ class _DashboardState extends State<Dashboard> {
                    ],
                  ),
                  Positioned(
-                     top:480.0,
+                     top:500.0,
                      // left: 20,
                      child:
                      Container(
-                       height: 34,
+                       height: 24,
                        width: MediaQuery.of(context).size.width,
                        decoration: const BoxDecoration(
                            color: Colors.white,
@@ -197,7 +256,7 @@ class _DashboardState extends State<Dashboard> {
                  //       child: Image.asset("assets/kitchen1.jpg",)),
                  // ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                  margin: EdgeInsets.symmetric(horizontal: 17,vertical: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -216,31 +275,81 @@ class _DashboardState extends State<Dashboard> {
              )
            ]else if(selectedIndex ==0)...[
              Container(
+               height: MediaQuery.of(context).size.height,
                decoration: const BoxDecoration(
                  image: DecorationImage(image: AssetImage("assets/moscow.jpg"),fit: BoxFit.cover)
                ),
                child: Container(
-                 margin: const EdgeInsets.symmetric(vertical: 20,horizontal: 30),
-                 child: Column(
-                   children: [
-                     const SizedBox(height: 20,),
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         const SearchField(showPrefixIcon: true,hintText: "Saint Petersburg",),
-                         Container(
-                           width: 50,
-                           height: 50,
-                           decoration:  const BoxDecoration(
-                             shape: BoxShape.circle,
-                             color: Colors.white,
+                 margin: const EdgeInsets.symmetric(horizontal: 30),
+                 child: SafeArea(
+                   child: Column(
+                     children: [
+                       const SizedBox(height: 20,),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
+                           const SearchField(showPrefixIcon: true,hintText: "Saint Petersburg",),
+                           Container(
+                             width: 50,
+                             height: 50,
+                             decoration:  const BoxDecoration(
+                               shape: BoxShape.circle,
+                               color: Colors.white,
+                             ),
+                             child: const Center(child: Icon(Icons.sort,color: Colors.grey,)),
                            ),
-                           child: const Center(child: Icon(Icons.sort,color: Colors.grey,)),
-                         ),
-                       ],
-                     ),
-                     buildAlignLocations()
-                   ],
+                         ],
+                       ),
+                       SizedBox(height: MediaQuery.of(context).size.height*0.07,),
+                       buildAlignLocations(position: Alignment.center),
+                       const SizedBox(height: 10,),
+                       Container(
+                         margin: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.1),
+                         child: buildAlignLocations(position: Alignment.center),
+                       ),
+                       buildAlignLocations(position: Alignment.centerRight),
+                       const SizedBox(height: 40,),
+                       buildAlignLocations(position: Alignment.centerRight),
+                       Container(
+                          margin: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.1),
+                          child: buildAlignLocations(
+                              position: Alignment.centerLeft)),
+                       Container(
+                          margin: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.1),
+                          child: buildAlignLocations(
+                              position: Alignment.centerRight)),
+                       SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         crossAxisAlignment: CrossAxisAlignment.end,
+                         children: [
+                           Column(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               dynamicIcons(iconData: Icons.cloud_rounded),
+                               SizedBox(height: 5,),
+                               dynamicIcons(iconData: Icons.location_on),
+                             ],
+                           ),
+                           Container(
+                             padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                             decoration: BoxDecoration(
+                              color: const Color(0XFF737373),
+                               borderRadius: BorderRadius.circular(30)
+                             ),
+                             child: Row(
+                               children: [
+                                  Icon(Icons.sort_sharp,color: iconColor,),
+                                 Text("List of variants",style: style.copyWith(color: iconColor),)
+                               ],
+                             ),
+                           )
+                         ],
+                       ),
+                    ],
+                   ),
                  ),
                ),
              )
@@ -253,9 +362,10 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Align buildAlignLocations() {
+
+  Align buildAlignLocations({AlignmentGeometry? position}) {
     return Align(
-      alignment: Alignment.center,
+      alignment: position!,
       child: Container(
         height: 50,
         // width: 50,
@@ -267,7 +377,7 @@ class _DashboardState extends State<Dashboard> {
                 bottomRight: Radius.circular(12),
                 topLeft: Radius.circular(12))),
         child: const Icon(
-          Icons.location_city_outlined,
+          Icons.blinds_closed_outlined,
           color: Colors.white,
         ),
       ),
@@ -292,12 +402,13 @@ class _DashboardState extends State<Dashboard> {
       alignment: Alignment.bottomCenter,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 7,horizontal: 7),
-        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: const Color(0XFFCDC8C1)
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(),
             const Text("Gladkova.., 25"),

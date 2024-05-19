@@ -67,7 +67,7 @@ class _SearchFieldState extends State<SearchField> {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      width: MediaQuery.of(context).size.width *0.6,
+      width: MediaQuery.of(context).size.width *0.7,
       decoration: BoxDecoration(
           color: const Color(0XFFEAEBF1),
           borderRadius: BorderRadius.circular(48)),
