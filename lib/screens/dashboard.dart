@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:moniepoint/components/animatedWidget.dart';
-import 'package:moniepoint/components/customAnimation.dart' as custom;
+import 'package:moniepoint/components/numberCountingAnimation.dart';
 import 'package:moniepoint/components/searchField.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,6 @@ class Dashboard extends StatefulWidget {
 final style =  GoogleFonts.ptSerif();
 
 class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
-  // late AnimationController _controller;
   late Animation<double> _widthAnimation;
   List<String> icons = ["assets/search.png","assets/message.png",
    "assets/home.png","assets/heart.png","assets/user.png"
@@ -210,8 +209,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                            Text("BUY",style: style.copyWith(fontSize: 15,color: Colors.white),),
                                            Column(
                                              children: [
-                                               // ${countKey.currentState?.offerCount()}
-                                               Text("1034",style: style.copyWith(fontSize: 25,fontWeight: FontWeight.bold,color: Colors.white),),
+                                               const NumberCountingAnimation(startNumber: 850, endNumber: 1034, duration: Duration(milliseconds: 2000), color: Colors.white,),
                                                Text("Offers",style: style.copyWith(fontSize: 15,color: Colors.white),)
                                              ],
                                            ),
@@ -234,7 +232,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                            Text("RENT",style: style.copyWith(fontSize: 15,color: const Color(0XFFA5957E)),),
                                            Column(
                                              children: [
-                                               Text("2212",style: style.copyWith(fontSize: 25,fontWeight: FontWeight.bold,color: const Color(0XFFA5957E)),),
+                                               const NumberCountingAnimation(startNumber: 1790, endNumber: 2212, duration: Duration(milliseconds: 2400), color: Color(0XFFA5957E),),
                                                Text("Offers",style: style.copyWith(fontSize: 15,color:const Color(0XFFA5957E)),)
                                              ],
                                            ),
@@ -464,7 +462,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                  child: Column(
                    crossAxisAlignment: CrossAxisAlignment.end,
                    children: [
-                     Text("NOTHING TO RENDER$shouldAnimate",),
+                     Text("COMING SOON",style: style,),
                    ],
                  ),
                ),
