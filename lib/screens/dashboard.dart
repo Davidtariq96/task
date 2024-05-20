@@ -207,7 +207,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                            Text("BUY",style: style.copyWith(fontSize: 15,color: Colors.white),),
                                            Column(
                                              children: [
-                                               const NumberCountingAnimation(startNumber: 850, endNumber: 1034, duration: Duration(milliseconds: 2000), color: Colors.white,),
+                                               const NumberCountingAnimation(startNumber: 750, endNumber: 1034, duration: Duration(milliseconds: 2700), color: Colors.white,),
                                                Text("Offers",style: style.copyWith(fontSize: 15,color: Colors.white),)
                                              ],
                                            ),
@@ -230,7 +230,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                            Text("RENT",style: style.copyWith(fontSize: 15,color: const Color(0XFFA5957E)),),
                                            Column(
                                              children: [
-                                               const NumberCountingAnimation(startNumber: 1790, endNumber: 2212, duration: Duration(milliseconds: 2400), color: Color(0XFFA5957E),),
+                                               const NumberCountingAnimation(startNumber: 1790, endNumber: 2212, duration: Duration(milliseconds: 3000), color: Color(0XFFA5957E),),
                                                Text("Offers",style: style.copyWith(fontSize: 15,color:const Color(0XFFA5957E)),)
                                              ],
                                            ),
