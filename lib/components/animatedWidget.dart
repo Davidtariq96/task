@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:animations/animations.dart';
+// import 'package:animations/animations.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/userProvider.dart';
@@ -120,7 +120,7 @@ class CustomAnimatedWidgetState extends State<CustomAnimatedWidget>
         );
       case AnimationType.transform:
         return AnimatedContainer(
-          duration: _controller.duration!, // Match animation duration
+          duration: _controller.duration!,
           width: _widthAnimation.value,
           height: 50,
           child: InkWell(onTap: (){

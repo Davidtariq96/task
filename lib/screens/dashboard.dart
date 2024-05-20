@@ -5,9 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:moniepoint/components/animatedWidget.dart';
 import 'package:moniepoint/components/numberCountingAnimation.dart';
 import 'package:moniepoint/components/searchField.dart';
-import 'package:provider/provider.dart';
 
-import '../provider/userProvider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -92,7 +90,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
             child: Container(
                 height: 70,
                 width: MediaQuery.of(context).size.width /1.4,
-                // margin:const EdgeInsets.only(bottom: 4),
+                margin:const EdgeInsets.only(bottom: 5),
                 padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                 decoration: BoxDecoration(
                     color: const Color(0XFF2B2B2B),
@@ -109,7 +107,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                         fadeInKey.currentState?.repeatAnimation();
                         slideInKey.currentState?.repeatAnimation();
                       }
-                    },icon: icons[index],color:selectedIndex== index ? const Color(0XFFFC9E11):Color(0XFF232220),index: index );
+                    },icon: icons[index],color:selectedIndex== index ? const Color(0XFFFC9E11):const Color(0XFF232220),index: index );
                   },itemCount: 5,)
             ),
           );
@@ -457,14 +455,14 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                ),
              )
            ]else ...[
-             Center(
-               child: SafeArea(
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.end,
-                   children: [
-                     Text("COMING SOON",style: style,),
-                   ],
-                 ),
+             SafeArea(
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   const SizedBox(height: 40,),
+                   Center(child: Text("COMING SOON",style: style,)),
+                 ],
                ),
              )
            ]

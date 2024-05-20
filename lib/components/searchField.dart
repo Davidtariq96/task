@@ -11,7 +11,6 @@ class SearchField extends StatefulWidget {
   final String? Function(String?)? validator;
   final Function()? onTap;
   final Function()? onTapPrefixIcon;
-  final bool createOffer;
   final bool showPrefixIcon;
   final Function(String?)? onSaved;
   final BorderRadius? borderRadius;
@@ -53,7 +52,6 @@ class SearchField extends StatefulWidget {
         this.isDense,
         this.hintText,
         this.initialValue,
-        this.createOffer = false,
         this.exportCvsTap,
         this.onTapPrefixIcon,
         this.showPrefixIcon = false})
