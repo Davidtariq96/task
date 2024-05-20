@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moniepoint/provider/userProvider.dart';
 import 'package:moniepoint/screens/dashboard.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => UserProvider())
+  ],child: const MyApp(),));
 }
 
 class MyApp extends StatelessWidget {
